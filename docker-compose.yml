@@ -1,0 +1,19 @@
+version: '3.9'
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./app:/app
+    command: >
+      sh -c "python manage.py wait_for_db &&
+             python manage.py migrate &&
+             python manage.py runserver 0.0.0.0:8000"
+
+# >: This is a YAML syntax that allows you to write a multiline string in a more readable format. 
+# It's called "folded style". It takes all the lines of text that follow and combines them into a single line, 
+# replacing newlines with a space. This is useful when the command you want to run in the Docker container is long and 
+# would be hard to read if it was all on one line.
