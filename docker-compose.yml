@@ -10,12 +10,31 @@ services:
       - "8000:8000"
     volumes:
       - ./app:/app
+    environment:
+      - DB_HOST=db
+      - DB_NAME=devdb
+      - DB_USER=devuser
+      - DB_PASSWORD=password
     command: >
       sh -c "python manage.py wait_for_db &&
              python manage.py migrate &&
              python manage.py runserver 0.0.0.0:8000"
+    depends_on:
+      - db
 
 # >: This is a YAML syntax that allows you to write a multiline string in a more readable format. 
 # It's called "folded style". It takes all the lines of text that follow and combines them into a single line, 
 # replacing newlines with a space. This is useful when the command you want to run in the Docker container is long and 
 # would be hard to read if it was all on one line.
+  db: 
+    image: postgres:13-alpine
+    environment:
+      - POSTGRES_DB=devdb
+      - POSTGRES_USER=devuser
+      - POSTGRES_PASSWORD=password
+    volumes:
+      - dev-db-data:/var/lib/postgresql/data
+    
+
+volumes:
+  dev-db-data:
