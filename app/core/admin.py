@@ -12,8 +12,10 @@ class UserAdmin(BaseUserAdmin):
     """
     define the admin pages for users
     """
+    # this portion is for listing users in the admin page
     ordering = ['id']
     list_display = ['email', 'name']
+    # this portion is for editing users in the admin page
     fieldsets = (
         (None, {
             'fields': ('email', 'password')
@@ -29,6 +31,16 @@ class UserAdmin(BaseUserAdmin):
         })
     )
     readonly_fields = ('last_login',)
+    # this portion is for adding users in the admin page
+    add_fieldsets = (
+        (None, {
+            'classes': ('wide',),
+            'fields': (
+                'email', 'password', 'password2', 'name',
+                'is_staff', 'is_superuser', 'is_active'
+                )
+        }),
+    )
 
 
 admin.site.register(models.User, UserAdmin)
